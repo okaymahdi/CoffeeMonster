@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router';
+import Header from '../Components/Shared/Header';
 
 const Main = () => {
   return (
     <div>
-      Main
-      <Outlet />
+      <Header />
+      <div className='container mx-auto max-w-330'>
+        <Outlet />
+      </div>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { connectDB } = require('./Config/ConnectDB.js');
-const { setCollections } = require('./Collections/Collections.js');
+const { connectDB } = require('./config/connectDB.js');
+const { setCollections } = require('./collections/collections.js');
 
 const app = express();
 
