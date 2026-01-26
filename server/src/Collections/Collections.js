@@ -8,9 +8,13 @@ const setCollections = ({ coffees, users, orders }) => {
   ordersCollection = orders;
 };
 
+const getCoffeesCollection = () => coffeesCollection;
+const getUsersCollection = () => usersCollection;
+const getOrdersCollection = () => ordersCollection;
+
 module.exports = {
   setCollections,
-  coffeesCollection,
-  usersCollection,
-  ordersCollection,
+  getCoffeesCollection,
+  getUsersCollection,
+  getOrdersCollection,
 };

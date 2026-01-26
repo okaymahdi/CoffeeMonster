@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { connectDB } = require('./config/connectDB.js');
 const { setCollections } = require('./collections/collections.js');
+const { coffeesRouter } = require('./routes/coffees.routes.js');
 
 const app = express();
 
@@ -40,6 +41,9 @@ const startServer = async () => {
     const collections = await myDB.listCollections().toArray();
     console.log('📂 Collections in DB:');
     collections.forEach((c) => console.log(' -', c.name));
+
+    /** Coffees Router */
+    app.use('/', coffeesRouter);
 
     /** Start the Server */
     app.listen(PORT, () => {

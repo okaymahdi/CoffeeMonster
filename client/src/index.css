@@ -1,2 +1,28 @@
 @import 'tailwindcss';
 @plugin "daisyui";
+
+:root {
+  --title: rgba(27, 26, 26, 0.8);
+  --placeholder: rgba(27, 26, 26, 0.6);
+}
+
+@theme {
+  --*: initial;
+  --color-title: var(--title);
+  --color-placeholder: var(--placeholder);
+}
+
+@layer base {
+  body {
+    *,
+    *::after,
+    *::before {
+      @apply m-0 p-0 box-border;
+    }
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-placeholder placeholder-opacity-50 placeholder:text-base-content/50;
+  }
+}
