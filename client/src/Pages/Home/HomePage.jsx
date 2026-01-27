@@ -1,8 +1,10 @@
 import { useLoaderData } from 'react-router';
 import CoffeeCard from '../../Components/Coffee/CoffeeCard';
+import { useState } from 'react';
 
 const HomePage = () => {
-  const coffees = useLoaderData();
+  const initialCoffees = useLoaderData();
+  const [coffees, setCoffees] = useState(initialCoffees);
 
   return (
     <div>
@@ -11,6 +13,8 @@ const HomePage = () => {
           <CoffeeCard
             key={coffee._id}
             coffee={coffee}
+            coffees={coffees}
+            setCoffees={setCoffees}
           />
         ))}
       </div>

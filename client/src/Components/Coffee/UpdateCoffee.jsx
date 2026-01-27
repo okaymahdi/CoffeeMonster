@@ -1,39 +1,22 @@
+import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
 
-const AddCoffee = () => {
-  const handleAddCoffee = (e) => {
+const UpdateCoffee = () => {
+  const { _id, name, quantity, supplier, taste, price, details, photo } =
+    useLoaderData();
+
+  const handleUpdateCoffee = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     const form = e.target;
-    const name = form.name.value;
-    const quantity = form.quantity.value;
-    const supplier = form.supplier.value;
-    const taste = form.taste.value;
-    const price = form.price.value;
-    const details = form.details.value;
-    const photo = form.photo.value;
-    const newCoffee = {
-      name,
-      quantity,
-      supplier,
-      taste,
-      price,
-      details,
-      photo,
-    };
-    console.log(newCoffee);
-
     const formData = new FormData(form);
-    console.log(...formData.entries());
+    const updatedCoffee = Object.fromEntries(formData.entries());
+    console.log(updatedCoffee);
 
-    const coffeeData = Object.fromEntries(formData.entries());
-    console.log(coffeeData);
-
-    /** Send Coffee Data to the Server */
-    fetch('http://localhost:3000/add-coffee', {
-      method: 'POST',
+    /** Send Update Request to the Server */
+    fetch(`http://localhost:3000/coffee/${_id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(coffeeData),
+      body: JSON.stringify(updatedCoffee),
     })
       .then(async (res) => {
         const data = await res.json();
@@ -50,29 +33,25 @@ const AddCoffee = () => {
         return data;
       })
       .then((data) => {
-        // Success
-        if (data.insertedId) {
-          const localCreatedTime = new Date(
-            data.createdAt || Date.now(),
+        if (data.modifiedCount > 0) {
+          const updatedTime = new Date(
+            data.updatedAt || Date.now(),
           ).toLocaleString();
-
           Swal.fire({
-            title: 'Coffee Added Successfully!',
-            text: `Created at: ${localCreatedTime}`,
+            position: 'top-end',
             icon: 'success',
-            draggable: true,
+            title: 'Coffee Updated Successfully!',
+            text: `Updated at: ${updatedTime}`,
+            showConfirmButton: false,
+            timer: 1500,
           });
-
-          console.log('After Adding Coffee', data);
-          form.reset();
         }
-      })
-      .catch((err) => console.error(err));
+      });
   };
   return (
     <div className=' container max-w-330 mx-auto px-28 py-17.5 rounded-md'>
       <div className='p-20.5 text-center space-y-12'>
-        <h1 className='text-6xl '>Add Coffee</h1>
+        <h1 className='text-6xl '>Update Coffee</h1>
         <p className='text-lg '>
           It is a long established fact that a reader will be distraceted by the
           readable content of a page when looking at its layout. The point of
@@ -82,7 +61,7 @@ const AddCoffee = () => {
       </div>
 
       <div>
-        <form onSubmit={handleAddCoffee}>
+        <form onSubmit={handleUpdateCoffee}>
           <div className='grid grid-cols-2 gap-6'>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
               <label className='label text-xl font-semibold '>Name</label>
@@ -91,6 +70,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='name'
                 placeholder='Enter coffee name'
+                defaultValue={name}
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
@@ -100,6 +80,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='quantity'
                 placeholder='Enter Coffee Quantity'
+                defaultValue={quantity}
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
@@ -109,6 +90,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='supplier'
                 placeholder='Enter Coffee Supplier'
+                defaultValue={supplier}
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
@@ -118,6 +100,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='taste'
                 placeholder='Enter Coffee Taste'
+                defaultValue={taste}
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
@@ -127,6 +110,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='price'
                 placeholder='Enter Coffee price'
+                defaultValue={price}
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
@@ -136,6 +120,7 @@ const AddCoffee = () => {
                 className='input w-full'
                 name='details'
                 placeholder='Enter Coffee Details'
+                defaultValue={details}
               />
             </fieldset>
           </div>
@@ -146,12 +131,13 @@ const AddCoffee = () => {
               className='input w-full'
               name='photo'
               placeholder='Enter Coffee Photo URL'
+              defaultValue={photo}
             />
           </fieldset>
           <input
             type='submit'
             className='btn btn-dash w-full'
-            value='Add Coffee'
+            value='Update Coffee'
           />
         </form>
       </div>
@@ -159,4 +145,4 @@ const AddCoffee = () => {
   );
 };
 
-export default AddCoffee;
+export default UpdateCoffee;

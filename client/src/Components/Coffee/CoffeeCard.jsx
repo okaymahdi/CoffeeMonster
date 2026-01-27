@@ -3,7 +3,7 @@ import { MdEdit, MdFolderDelete } from 'react-icons/md';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
   const { name, chef, price, photo, _id } = coffee;
 
   const handleDelete = (_id) => {
@@ -27,13 +27,15 @@ const CoffeeCard = ({ coffee }) => {
           })
             .then((res) => res.json())
             .then((data) => {
-              console.log(data);
+              console.log('DELETE RESPONSE:', data);
               if (data.deletedCount > 0) {
                 Swal.fire({
                   title: 'Deleted!',
                   text: 'Your Coffee has been Deleted.',
                   icon: 'success',
                 });
+                const remaining = coffees.filter((c) => c._id !== _id);
+                setCoffees(remaining); // ✅ UI update হবে
               }
             });
         }
@@ -67,9 +69,11 @@ const CoffeeCard = ({ coffee }) => {
                 <FaEye size={20} />
               </button>
             </Link>
-            <button className='btn join-item'>
-              <MdEdit size={20} />
-            </button>
+            <Link to={`/update-coffee/${_id}`}>
+              <button className='btn join-item bg-green-500'>
+                <MdEdit size={20} />
+              </button>
+            </Link>
             <button
               onClick={() => handleDelete(_id)}
               className='btn join-item bg-red-500'
