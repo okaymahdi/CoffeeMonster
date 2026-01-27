@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { getCoffeesCollection } from '../collections/collections.js';
 const coffeesCollection = getCoffeesCollection();
 /** Add a new coffee */
@@ -66,4 +67,43 @@ const getAllCoffeesController = async (req, res) => {
   }
 };
 
-export { addCoffeeController, getAllCoffeesController };
+/** Get Single Coffee */
+const getSingleCoffeeByIdController = async (req, res) => {
+  try {
+    const coffeesCollection = getCoffeesCollection();
+    const { id } = req.params;
+    const query = { _id: new ObjectId(id) };
+    const coffee = await coffeesCollection.findOne(query);
+    if (!coffee) {
+      return res.status(404).json({ message: 'Coffee not found' });
+    }
+    res.json(coffee);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+/** Delete a coffee */
+const deleteCoffeeController = async (req, res) => {
+  try {
+    const coffeesCollection = getCoffeesCollection();
+    const { id } = req.params;
+    const query = { _id: new ObjectId(id) };
+    const result = await coffeesCollection.deleteOne(query);
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Coffee not found' });
+    }
+    res.json({ message: 'Coffee deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+export {
+  addCoffeeController,
+  getAllCoffeesController,
+  deleteCoffeeController,
+  getSingleCoffeeByIdController,
+};
