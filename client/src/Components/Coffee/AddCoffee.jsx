@@ -9,10 +9,10 @@ const AddCoffee = () => {
     const chef = form.chef.value;
     const supplier = form.supplier.value;
     const taste = form.taste.value;
-    const category = form.category.value;
+    const price = form.price.value;
     const details = form.details.value;
     const photo = form.photo.value;
-    const newCoffee = { name, chef, supplier, taste, category, details, photo };
+    const newCoffee = { name, chef, supplier, taste, price, details, photo };
     console.log(newCoffee);
 
     const formData = new FormData(form);
@@ -113,12 +113,12 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold '>Category</label>
+              <label className='label text-xl font-semibold '>Price</label>
               <input
-                type='text'
+                type='number'
                 className='input w-full'
-                name='category'
-                placeholder='Enter Coffee Category'
+                name='price'
+                placeholder='Enter Coffee price'
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>

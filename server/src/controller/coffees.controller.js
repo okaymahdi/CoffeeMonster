@@ -1,13 +1,19 @@
 import { getCoffeesCollection } from '../collections/collections.js';
-
+const coffeesCollection = getCoffeesCollection();
+/** Add a new coffee */
 const addCoffeeController = async (req, res) => {
   try {
+    const coffeesCollection = getCoffeesCollection();
+    const price = parseFloat(req.body.price);
+    if (isNaN(price)) {
+      return res.status(400).json({ message: 'Price must be a number' });
+    }
     const coffeeData = {
       ...req.body,
+      price: price,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const coffeesCollection = getCoffeesCollection();
 
     console.log(coffeeData);
 
@@ -24,7 +30,7 @@ const addCoffeeController = async (req, res) => {
       name: coffeeData.name,
       supplier: coffeeData.supplier,
       taste: coffeeData.taste,
-      category: coffeeData.category,
+      price: coffeeData.price,
       details: coffeeData.details,
       photo: coffeeData.photo,
     });
@@ -47,4 +53,17 @@ const addCoffeeController = async (req, res) => {
   }
 };
 
-export { addCoffeeController };
+/** Get All Coffees */
+const getAllCoffeesController = async (req, res) => {
+  try {
+    const coffeesCollection = getCoffeesCollection();
+    const cursor = await coffeesCollection.find({});
+    const coffees = await cursor.toArray();
+    res.json(coffees);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+export { addCoffeeController, getAllCoffeesController };
