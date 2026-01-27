@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 const AddCoffee = () => {
   const handleAddCoffee = (e) => {
     e.preventDefault();
@@ -22,25 +24,48 @@ const AddCoffee = () => {
     /** Send Coffee Data to the Server */
     fetch('http://localhost:3000/add-coffee', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(coffeeData),
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          // error handle
+          Swal.fire({
+            title: 'Error!',
+            text: data.message || 'Something went wrong',
+            icon: 'error',
+            draggable: true,
+          });
+          throw new Error(data.message || 'Server Error');
+        }
+        return data;
+      })
       .then((data) => {
+        // Success
         if (data.insertedId) {
-          alert('Coffee Added Successfully');
+          const localCreatedTime = new Date(
+            data.createdAt || Date.now(),
+          ).toLocaleString();
+
+          Swal.fire({
+            title: 'Coffee Added Successfully!',
+            text: `Created at: ${localCreatedTime}`,
+            icon: 'success',
+            draggable: true,
+          });
+
           console.log('After Adding Coffee', data);
           form.reset();
         }
-      });
+      })
+      .catch((err) => console.error(err));
   };
   return (
-    <div className='max-w-330 mx-auto px-28 py-17.5 rounded-md'>
+    <div className=' container max-w-330 mx-auto px-28 py-17.5 rounded-md'>
       <div className='p-20.5 text-center space-y-12'>
-        <h1 className='text-6xl'>Add Coffee</h1>
-        <p className='text-lg'>
+        <h1 className='text-6xl '>Add Coffee</h1>
+        <p className='text-lg '>
           It is a long established fact that a reader will be distraceted by the
           readable content of a page when looking at its layout. The point of
           using Lorem Ipsum is that it has a more-or-less normal distribution of
@@ -50,11 +75,9 @@ const AddCoffee = () => {
 
       <div>
         <form onSubmit={handleAddCoffee}>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          <div className='grid grid-cols-2 gap-6'>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Name
-              </label>
+              <label className='label text-xl font-semibold '>Name</label>
               <input
                 type='text'
                 className='input w-full'
@@ -63,9 +86,7 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Chef
-              </label>
+              <label className='label text-xl font-semibold '>Chef</label>
               <input
                 type='text'
                 className='input w-full'
@@ -74,9 +95,7 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Supplier
-              </label>
+              <label className='label text-xl font-semibold '>Supplier</label>
               <input
                 type='text'
                 className='input w-full'
@@ -85,9 +104,7 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Taste
-              </label>
+              <label className='label text-xl font-semibold '>Taste</label>
               <input
                 type='text'
                 className='input w-full'
@@ -96,9 +113,7 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Category
-              </label>
+              <label className='label text-xl font-semibold '>Category</label>
               <input
                 type='text'
                 className='input w-full'
@@ -107,9 +122,7 @@ const AddCoffee = () => {
               />
             </fieldset>
             <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4'>
-              <label className='label text-xl font-semibold text-title'>
-                Details
-              </label>
+              <label className='label text-xl font-semibold '>Details</label>
               <input
                 type='text'
                 className='input w-full'
@@ -119,9 +132,7 @@ const AddCoffee = () => {
             </fieldset>
           </div>
           <fieldset className='fieldset bg-base-200 border-base-300 rounded-box border p-4 my-6'>
-            <label className='label text-xl font-semibold text-title'>
-              Photo
-            </label>
+            <label className='label text-xl font-semibold '>Photo</label>
             <input
               type='text'
               className='input w-full'
