@@ -12,8 +12,8 @@ coffeesRouter.post('/add-coffee', addCoffeeController);
 
 coffeesRouter.get('/coffees', getAllCoffeesController);
 
-coffeesRouter.get('/coffees/:id', getSingleCoffeeByIdController);
+coffeesRouter.get('/coffee/:id', getSingleCoffeeByIdController);
 
-coffeesRouter.delete('/coffees/:id', deleteCoffeeController);
+coffeesRouter.delete('/coffee/:id', deleteCoffeeController);
 
 exports.coffeesRouter = coffeesRouter;

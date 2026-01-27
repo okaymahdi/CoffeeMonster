@@ -1,5 +1,6 @@
 import { FaEye } from 'react-icons/fa';
 import { MdEdit, MdFolderDelete } from 'react-icons/md';
+import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 
 const CoffeeCard = ({ coffee }) => {
@@ -21,7 +22,7 @@ const CoffeeCard = ({ coffee }) => {
           console.log(result.isConfirmed);
 
           /** Send Delete Request to Server */
-          fetch(`http://localhost:3000/coffees/${_id}`, {
+          fetch(`http://localhost:3000/coffee/${_id}`, {
             method: 'DELETE',
           })
             .then((res) => res.json())
@@ -61,9 +62,11 @@ const CoffeeCard = ({ coffee }) => {
         </div>
         <div className='card-actions justify-end'>
           <div className='join join-vertical space-y-4'>
-            <button className='btn join-item bg-orange-400'>
-              <FaEye size={20} />
-            </button>
+            <Link to={`/coffee/${_id}`}>
+              <button className='btn join-item bg-orange-400'>
+                <FaEye size={20} />
+              </button>
+            </Link>
             <button className='btn join-item'>
               <MdEdit size={20} />
             </button>

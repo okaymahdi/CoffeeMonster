@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import AddCoffee from '../Components/Coffee/AddCoffee';
 import Main from '../Layouts/Main';
 import HomePage from '../Pages/Home/HomePage';
+import CoffeeDetails from '../Components/Coffee/CoffeeDetails';
 
 const Router = createBrowserRouter([
   {
@@ -22,12 +23,28 @@ const Router = createBrowserRouter([
             return [];
           }
         },
-        HydrateFallback: () => <div>Loading Home Page Data...</div>,
         Component: HomePage,
       },
       {
         path: 'add-coffee',
         Component: AddCoffee,
+      },
+      {
+        path: 'coffee/:id',
+        loader: async ({ params }) => {
+          try {
+            const res = await fetch(
+              `http://localhost:3000/coffee/${params.id}`,
+            );
+            if (!res.ok) throw new Error('Failed to fetch coffees');
+            const data = await res.json();
+            return data;
+          } catch (error) {
+            console.error('Loader error:', error);
+            return [];
+          }
+        },
+        Component: CoffeeDetails,
       },
     ],
   },

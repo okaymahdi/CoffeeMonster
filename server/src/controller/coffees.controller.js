@@ -71,7 +71,7 @@ const getAllCoffeesController = async (req, res) => {
 const getSingleCoffeeByIdController = async (req, res) => {
   try {
     const coffeesCollection = getCoffeesCollection();
-    const { id } = req.params;
+    const id = req.params.id;
     const query = { _id: new ObjectId(id) };
     const coffee = await coffeesCollection.findOne(query);
     if (!coffee) {
@@ -88,7 +88,7 @@ const getSingleCoffeeByIdController = async (req, res) => {
 const deleteCoffeeController = async (req, res) => {
   try {
     const coffeesCollection = getCoffeesCollection();
-    const { id } = req.params;
+    const id = req.params.id;
     const query = { _id: new ObjectId(id) };
     const result = await coffeesCollection.deleteOne(query);
     if (result.deletedCount === 0) {
@@ -103,7 +103,7 @@ const deleteCoffeeController = async (req, res) => {
 
 export {
   addCoffeeController,
-  getAllCoffeesController,
   deleteCoffeeController,
+  getAllCoffeesController,
   getSingleCoffeeByIdController,
 };
