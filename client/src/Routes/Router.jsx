@@ -3,7 +3,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import AddCoffee from '../Components/Coffee/AddCoffee';
 import CoffeeDetails from '../Components/Coffee/CoffeeDetails';
 import UpdateCoffee from '../Components/Coffee/UpdateCoffee';
+import AuthProvider from '../Contexts/AuthProvider';
 import Main from '../Layouts/Main';
+import SignIn from '../Pages/Auth/SignIn';
+import SignUp from '../Pages/Auth/SignUp';
 import HomePage from '../Pages/Home/HomePage';
 
 const Router = createBrowserRouter([
@@ -65,6 +68,14 @@ const Router = createBrowserRouter([
         },
         Component: UpdateCoffee,
       },
+      {
+        path: 'signup',
+        Component: SignUp,
+      },
+      {
+        path: 'signin',
+        Component: SignIn,
+      },
     ],
   },
 ]);
@@ -72,10 +83,12 @@ const Router = createBrowserRouter([
 const AppRouter = () => {
   return (
     <Suspense fallback={<div>Loading page...</div>}>
-      <RouterProvider
-        router={Router}
-        hydrateFallbackElement={<div>Loading route data...</div>}
-      />
+      <AuthProvider>
+        <RouterProvider
+          router={Router}
+          hydrateFallbackElement={<div>Loading route data...</div>}
+        />
+      </AuthProvider>
     </Suspense>
   );
 };

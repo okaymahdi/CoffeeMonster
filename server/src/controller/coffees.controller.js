@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { getCoffeesCollection } from '../collections/collections.js';
-const coffeesCollection = getCoffeesCollection();
+
 /** Add a new coffee */
 const addCoffeeController = async (req, res) => {
   try {
@@ -131,7 +131,7 @@ const updateCoffeeController = async (req, res) => {
     res.json({
       message: 'Coffee updated successfully',
       modifiedCount: result.modifiedCount,
-      result
+      result,
     });
   } catch (error) {
     console.error(error);

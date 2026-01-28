@@ -11,6 +11,16 @@ const navLinks = [
     label: 'Add Coffee',
     path: '/add-coffee',
   },
+  {
+    id: 3,
+    label: 'Sign Up',
+    path: '/signup',
+  },
+  {
+    id: 4,
+    label: 'Sign In',
+    path: '/signin',
+  },
 ];
 
 const Header = () => {

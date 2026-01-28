@@ -5,6 +5,8 @@ const { connectDB } = require('./config/connectDB.js');
 const { setCollections } = require('./collections/collections.js');
 const { coffeesRouter } = require('./routes/coffees.routes.js');
 
+const { usersRouter } = require('./routes/users.routes.js');
+
 const app = express();
 
 /** Environment Variables */
@@ -44,6 +46,9 @@ const startServer = async () => {
 
     /** Coffees Router */
     app.use('/', coffeesRouter);
+
+    /** Users Router */
+    app.use('/', usersRouter);
 
     /** Start the Server */
     app.listen(PORT, () => {
