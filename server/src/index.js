@@ -4,7 +4,6 @@ const cors = require('cors');
 const { connectDB } = require('./config/connectDB.js');
 const { setCollections } = require('./collections/collections.js');
 const { coffeesRouter } = require('./routes/coffees.routes.js');
-
 const { usersRouter } = require('./routes/users.routes.js');
 
 const app = express();

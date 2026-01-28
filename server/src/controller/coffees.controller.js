@@ -1,5 +1,5 @@
-import { ObjectId } from 'mongodb';
-import { getCoffeesCollection } from '../collections/collections.js';
+const { ObjectId } = require('mongodb');
+const { getCoffeesCollection } = require('../collections/collections');
 
 /** Add a new coffee */
 const addCoffeeController = async (req, res) => {
@@ -162,7 +162,7 @@ const deleteCoffeeController = async (req, res) => {
   }
 };
 
-export {
+module.exports = {
   addCoffeeController,
   deleteCoffeeController,
   getAllCoffeesController,

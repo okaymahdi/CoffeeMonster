@@ -19,4 +19,4 @@ coffeesRouter.put('/coffee/:id', updateCoffeeController);
 
 coffeesRouter.delete('/coffee/:id', deleteCoffeeController);
 
-exports.coffeesRouter = coffeesRouter;
+module.exports = { coffeesRouter };

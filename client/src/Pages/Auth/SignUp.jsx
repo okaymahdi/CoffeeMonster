@@ -1,6 +1,6 @@
 import { use } from 'react';
-import { AuthContext } from '../../Contexts/AuthContext';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../Contexts/AuthContext';
 
 const SignUp = () => {
   const { createUser } = use(AuthContext);
@@ -11,16 +11,24 @@ const SignUp = () => {
 
     /** 2. Get Form Data With FormData */
     const formData = new FormData(form);
-    const { email, password, ...userProfile } = Object.fromEntries(
+    const { email, password, ...restFormData } = Object.fromEntries(
       formData.entries(),
     );
-    console.log(userProfile);
 
     /** Create User With Email & Password */
     createUser(email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
+
+        /** Data Sent to the Server */
+        const userProfile = {
+          email,
+          password,
+          ...restFormData,
+          creationTime: result?.user?.metadata?.creationTime,
+          lastSignInTime: result?.user?.metadata?.lastSignInTime,
+        };
 
         /** Save Profile Info in the Database */
         fetch('http://localhost:3000/users', {
@@ -33,10 +41,11 @@ const SignUp = () => {
             if (!res.ok) {
               // error handle
               Swal.fire({
-                title: 'Error!',
-                text: data.message || 'Something went wrong',
+                position: 'top-end',
                 icon: 'error',
-                draggable: true,
+                title: data.message || 'Something went wrong',
+                showConfirmButton: false,
+                timer: 1500,
               });
               throw new Error(data.message || 'Server Error');
             }
@@ -45,12 +54,13 @@ const SignUp = () => {
           .then((data) => {
             console.log('After Created', data);
             if (data.insertedId) {
-              const localCreatedTime = new Date().toLocaleString();
               Swal.fire({
-                title: 'User Created Successfully!',
-                text: `Created at: ${localCreatedTime}`,
+                position: 'top-end',
                 icon: 'success',
-                draggable: true,
+                title: data.message || 'Your Account Created Successfully!',
+                text: `Created at: ${userProfile.creationTime}`,
+                showConfirmButton: false,
+                timer: 1500,
               });
             }
           });
