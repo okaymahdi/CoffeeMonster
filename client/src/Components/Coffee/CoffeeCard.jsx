@@ -34,7 +34,9 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
                   text: 'Your Coffee has been Deleted.',
                   icon: 'success',
                 });
-                const remaining = coffees.filter((c) => c._id !== _id);
+
+                /** Remove the Coffee from the State and Update UI */
+                const remaining = coffees.filter((coff) => coff._id !== _id);
                 setCoffees(remaining); // ✅ UI update হবে
               }
             });
