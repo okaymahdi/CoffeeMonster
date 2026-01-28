@@ -8,6 +8,7 @@ import Main from '../Layouts/Main';
 import SignIn from '../Pages/Auth/SignIn';
 import SignUp from '../Pages/Auth/SignUp';
 import HomePage from '../Pages/Home/HomePage';
+import Users from '../Pages/Users/Users';
 
 const Router = createBrowserRouter([
   {
@@ -75,6 +76,11 @@ const Router = createBrowserRouter([
       {
         path: 'signin',
         Component: SignIn,
+      },
+      {
+        path: 'users',
+        loader: () => fetch('http://localhost:3000/users'),
+        Component: Users,
       },
     ],
   },

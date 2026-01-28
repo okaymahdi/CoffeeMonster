@@ -26,9 +26,15 @@ const createUserController = async (req, res) => {
 
 /** Get All Users Controller */
 const getAllUsersController = async (req, res) => {
-  const usersCollection = getUsersCollection();
-  const users = await usersCollection.find({}).toArray();
-  res.send(users);
+  try {
+    const usersCollection = getUsersCollection();
+    const cursor = await usersCollection.find();
+    const users = await cursor.toArray();
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
 };
 
 module.exports = { createUserController, getAllUsersController };

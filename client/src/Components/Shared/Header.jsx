@@ -21,6 +21,11 @@ const navLinks = [
     label: 'Sign In',
     path: '/signin',
   },
+  {
+    id: 5,
+    label: 'Users',
+    path: '/users',
+  },
 ];
 
 const Header = () => {
@@ -32,7 +37,7 @@ const Header = () => {
             key={link.id}
             to={link.path}
             className={({ isActive }) =>
-              isActive ? 'text-yellow-500 mx-4' : 'mx-4'
+              isActive ? 'text-orange-500 mx-4' : 'mx-4'
             }
           >
             {link.label}

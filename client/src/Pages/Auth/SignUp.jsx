@@ -1,12 +1,14 @@
-import { use } from 'react';
+import { use, useState } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../Contexts/AuthContext';
 
 const SignUp = () => {
   const { createUser } = use(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = (e) => {
     e.preventDefault();
+    setLoading(true);
     const form = e.target;
 
     /** 2. Get Form Data With FormData */
@@ -29,6 +31,7 @@ const SignUp = () => {
           creationTime: result?.user?.metadata?.creationTime,
           lastSignInTime: result?.user?.metadata?.lastSignInTime,
         };
+        console.log('User Profile Data:', userProfile);
 
         /** Save Profile Info in the Database */
         fetch('http://localhost:3000/users', {
@@ -70,6 +73,10 @@ const SignUp = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+      })
+      .finally(() => {
+        setLoading(false); // 🔥 এটিই missing ছিল
+        form.reset();
       });
   };
   return (
@@ -125,7 +132,12 @@ const SignUp = () => {
           <div>
             <a className='link link-hover'>Forgot password?</a>
           </div>
-          <button className='btn btn-neutral mt-4'>Sign Up</button>
+          <button
+            disabled={loading}
+            className='btn btn-neutral mt-4'
+          >
+            Sign Up
+          </button>
         </form>
       </div>
     </div>
