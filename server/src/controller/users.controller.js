@@ -25,6 +25,25 @@ const createUserController = async (req, res) => {
   }
 };
 
+/** Update User Last SignIn Time Controller */
+const updateLastSignInTimeController = async (req, res) => {
+  const { email, lastSignInTime } = req.body;
+  const filter = { email: email };
+  const updateDoc = {
+    $set: {
+      lastSignInTime: lastSignInTime,
+    },
+  };
+  try {
+    const usersCollection = getUsersCollection();
+    const result = await usersCollection.updateOne(filter, updateDoc);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
 /** Get All Users Controller */
 const getAllUsersController = async (req, res) => {
   try {
@@ -54,6 +73,7 @@ const deleteUserController = async (req, res) => {
 
 module.exports = {
   createUserController,
+  updateLastSignInTimeController,
   getAllUsersController,
   deleteUserController,
 };

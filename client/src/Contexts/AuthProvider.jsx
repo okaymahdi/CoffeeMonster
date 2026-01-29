@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { auth } from '../Firebase/firebase.init';
 import { AuthContext } from './AuthContext';
 
@@ -6,6 +10,11 @@ const AuthProvider = ({ children }) => {
   /** Create User With Email & Password */
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  /** Sign In User */
+  const signInUser = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   /** Delete User */
@@ -27,9 +36,12 @@ const AuthProvider = ({ children }) => {
 
   const userInfo = {
     createUser,
+    signInUser,
     firebaseDeleteUser,
   };
-  return <AuthContext value={userInfo}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
