@@ -10,17 +10,19 @@ const AuthProvider = ({ children }) => {
 
   /** Delete User */
   const firebaseDeleteUser = async () => {
-    if (!auth.currentUser) {
+    const user = auth.currentUser;
+    if (!user) {
       console.log('No user logged in');
       return;
     }
 
-    try {
-      await deleteUser(auth.currentUser);
-      console.log('User deleted');
-    } catch (error) {
-      console.error(error);
-    }
+    deleteUser(user)
+      .then(() => {
+        console.log('User deleted successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const userInfo = {

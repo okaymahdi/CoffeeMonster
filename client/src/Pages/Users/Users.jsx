@@ -117,7 +117,7 @@ const Users = () => {
                             className='w-full h-full object-cover'
                           />
                         ) : (
-                          <span className='text-xl text-orange-400 uppercase'>
+                          <span className='flex items-center justify-center font-bold text-xl text-orange-400 uppercase bg-orange-50 mask mask-squircle h-12 w-12'>
                             {user?.name?.slice(0, 1)}
                           </span>
                         )}
