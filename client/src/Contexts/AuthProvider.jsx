@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
       console.error(error);
     }
   };
+
   const userInfo = {
     createUser,
     firebaseDeleteUser,

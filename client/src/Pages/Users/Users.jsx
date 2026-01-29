@@ -13,15 +13,16 @@ const Users = () => {
 
   /** Delete User Handler */
   const handleDelete = (id) => {
+    const userToDelete = users.find((user) => user._id === id);
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: `Delete user: ${userToDelete.email}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
         try {
           fetch(`http://localhost:3000/users/${id}`, {
@@ -40,42 +41,32 @@ const Users = () => {
                 });
                 throw new Error(data.message || 'Server Error');
               }
-
               return data;
             })
-            .then((data) => {
+            .then(async (data) => {
               console.log('After Deleted', data);
-              if (data.deletedCount === 0) {
-                Swal.fire({
-                  position: 'top-end',
-                  icon: 'success',
-                  title: data.message || 'Yser has been Deleted Successfully!',
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
+              if (data.deletedCount) {
+                /** Delete User from Firebase */
+                await firebaseDeleteUser();
+
+                /** Update UI */
+                const remainingUsers = users.filter((user) => user._id !== id);
+                setUsers(remainingUsers);
               }
             });
-
-          /** Delete User from Firebase */
-          await firebaseDeleteUser();
-
-          /** Update UI */
-          const remainingUsers = users.filter((user) => user._id !== id);
-          setUsers(remainingUsers);
-
+        } catch (error) {
           Swal.fire({
             position: 'top-end',
-            icon: 'success',
-            title: 'User has been Deleted Successfully!',
+            icon: 'error',
+            title: error.message,
             showConfirmButton: false,
             timer: 1500,
           });
-        } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: error.message,
-          });
         }
+        Swal.fire({
+          title: `${userToDelete.email} deleted successfully!`,
+          icon: 'success',
+        });
       }
     });
   };
@@ -111,10 +102,25 @@ const Users = () => {
                   <div className='flex items-center gap-3'>
                     <div className='avatar'>
                       <div className='mask mask-squircle h-12 w-12'>
-                        <img
-                          src={user.photo}
-                          alt={user.name}
-                        />
+                        {user?.photo &&
+                        (() => {
+                          try {
+                            new URL(user.photo);
+                            return true;
+                          } catch {
+                            return false;
+                          }
+                        })() ? (
+                          <img
+                            src={user.photo}
+                            alt={user.name}
+                            className='w-full h-full object-cover'
+                          />
+                        ) : (
+                          <span className='text-xl text-orange-400 uppercase'>
+                            {user?.name?.slice(0, 1)}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div>
