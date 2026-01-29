@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { getUsersCollection } = require('../collections/collections.js');
 
 const bcrypt = require('bcrypt');
@@ -37,4 +38,22 @@ const getAllUsersController = async (req, res) => {
   }
 };
 
-module.exports = { createUserController, getAllUsersController };
+/** Delete a User */
+const deleteUserController = async (req, res) => {
+  try {
+    const usersCollection = getUsersCollection();
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const result = await usersCollection.deleteOne(query);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = {
+  createUserController,
+  getAllUsersController,
+  deleteUserController,
+};

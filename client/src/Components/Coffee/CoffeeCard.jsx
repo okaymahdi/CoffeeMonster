@@ -67,18 +67,18 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
         <div className='card-actions justify-end'>
           <div className='join join-vertical space-y-4'>
             <Link to={`/coffee/${_id}`}>
-              <button className='btn join-item bg-orange-400'>
+              <button className='btn btn-soft btn-primary'>
                 <FaEye size={20} />
               </button>
             </Link>
             <Link to={`/update-coffee/${_id}`}>
-              <button className='btn join-item bg-green-500'>
+              <button className='btn btn-soft btn-accent'>
                 <MdEdit size={20} />
               </button>
             </Link>
             <button
               onClick={() => handleDelete(_id)}
-              className='btn join-item bg-red-500'
+              className='btn btn-soft btn-error'
             >
               <MdFolderDelete size={20} />
             </button>
