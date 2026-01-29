@@ -1,30 +1,29 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { FaEye } from 'react-icons/fa';
 import { MdEdit, MdFolderDelete } from 'react-icons/md';
 import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../Contexts/AuthContext';
 
 const Users = () => {
+  const { firebaseDeleteUser } = use(AuthContext);
   const initialUsers = useLoaderData();
   const [users, setUsers] = useState(initialUsers);
   console.log(initialUsers);
 
   /** Delete User Handler */
   const handleDelete = (id) => {
-    try {
-      console.log('Delete User with ID:', id);
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log(result.isConfirmed);
-          /** Send Delete Request to Server */
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
           fetch(`http://localhost:3000/users/${id}`, {
             method: 'DELETE',
           })
@@ -41,35 +40,50 @@ const Users = () => {
                 });
                 throw new Error(data.message || 'Server Error');
               }
+
               return data;
             })
             .then((data) => {
-              console.log('DELETE RESPONSE:', data);
-              if (data.deletedCount > 0) {
+              console.log('After Deleted', data);
+              if (data.deletedCount === 0) {
                 Swal.fire({
                   position: 'top-end',
                   icon: 'success',
-                  title: data.message || 'User Deleted Successfully!',
+                  title: data.message || 'Yser has been Deleted Successfully!',
                   showConfirmButton: false,
                   timer: 1500,
                 });
-                /** Remove the User from the State and Update UI */
-                const remaining = users.filter((user) => user._id !== id);
-                setUsers(remaining); // ✅ UI update হবে
               }
             });
+
+          /** Delete User from Firebase */
+          await firebaseDeleteUser();
+
+          /** Update UI */
+          const remainingUsers = users.filter((user) => user._id !== id);
+          setUsers(remainingUsers);
+
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User has been Deleted Successfully!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: error.message,
+          });
         }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+      }
+    });
   };
 
   return (
     <div>
       <h2 className='text-3xl'>
-        Users:{' '}
-        <span className='font-bold text-orange-400'>{initialUsers.length}</span>
+        Users: <span className='font-bold text-orange-400'>{users.length}</span>
       </h2>
 
       <div className='overflow-x-auto'>
