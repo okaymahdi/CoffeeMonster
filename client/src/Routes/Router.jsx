@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import AddCoffee from '../Components/Coffee/AddCoffee';
@@ -85,22 +86,25 @@ const Router = createBrowserRouter([
       },
       {
         path: 'all-users',
-        loader: () => fetch(`${import.meta.env.VITE_API_URL}/users`),
         Component: AllUsers,
       },
     ],
   },
 ]);
 
+/** Create a client */
+const queryClient = new QueryClient();
 const AppRouter = () => {
   return (
     <Suspense fallback={<div>Loading page...</div>}>
-      <AuthProvider>
-        <RouterProvider
-          router={Router}
-          hydrateFallbackElement={<div>Loading route data...</div>}
-        />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <RouterProvider
+            router={Router}
+            hydrateFallbackElement={<div>Loading route data...</div>}
+          />
+        </AuthProvider>
+      </QueryClientProvider>
     </Suspense>
   );
 };
