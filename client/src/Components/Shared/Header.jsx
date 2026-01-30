@@ -26,6 +26,11 @@ const navLinks = [
     label: 'Users',
     path: '/users',
   },
+  {
+    id: 6,
+    label: 'All Users',
+    path: '/all-users',
+  },
 ];
 
 const Header = () => {

@@ -8,6 +8,7 @@ import Main from '../Layouts/Main';
 import SignIn from '../Pages/Auth/SignIn';
 import SignUp from '../Pages/Auth/SignUp';
 import HomePage from '../Pages/Home/HomePage';
+import AllUsers from '../Pages/Users/AllUsers';
 import Users from '../Pages/Users/Users';
 
 const Router = createBrowserRouter([
@@ -81,6 +82,11 @@ const Router = createBrowserRouter([
         path: 'users',
         loader: () => fetch(`${import.meta.env.VITE_API_URL}/users`),
         Component: Users,
+      },
+      {
+        path: 'all-users',
+        loader: () => fetch(`${import.meta.env.VITE_API_URL}/users`),
+        Component: AllUsers,
       },
     ],
   },

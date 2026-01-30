@@ -1,6 +1,7 @@
 import { use, useState } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../Contexts/AuthContext';
+import axios from 'axios';
 
 const SignUp = () => {
   const { createUser } = use(AuthContext);
@@ -33,30 +34,12 @@ const SignUp = () => {
         };
         console.log('User Profile Data:', userProfile);
 
-        /** Save Profile Info in the Database */
-        fetch(`${import.meta.env.VITE_API_URL}/users`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userProfile),
-        })
-          .then(async (res) => {
-            const data = await res.json();
-            if (!res.ok) {
-              // error handle
-              Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: data.message || 'Something went wrong',
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              throw new Error(data.message || 'Server Error');
-            }
-            return data;
-          })
+        /** Save Profile Info in the Database with Axios */
+        axios
+          .post(`${import.meta.env.VITE_API_URL}/users`, userProfile)
           .then((data) => {
-            console.log('After Created', data);
-            if (data.insertedId) {
+            console.log('After Created with Axios', data);
+            if (data.data.insertedId) {
               Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -67,6 +50,41 @@ const SignUp = () => {
               });
             }
           });
+
+        /** Save Profile Info in the Database with Fetch */
+        // fetch(`${import.meta.env.VITE_API_URL}/users`, {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(userProfile),
+        // })
+        //   .then(async (res) => {
+        //     const data = await res.json();
+        //     if (!res.ok) {
+        //       // error handle
+        //       Swal.fire({
+        //         position: 'top-end',
+        //         icon: 'error',
+        //         title: data.message || 'Something went wrong',
+        //         showConfirmButton: false,
+        //         timer: 1500,
+        //       });
+        //       throw new Error(data.message || 'Server Error');
+        //     }
+        //     return data;
+        //   })
+        //   .then((data) => {
+        //     console.log('After Created', data);
+        //     if (data.insertedId) {
+        //       Swal.fire({
+        //         position: 'top-end',
+        //         icon: 'success',
+        //         title: data.message || 'Your Account Created Successfully!',
+        //         text: `Created at: ${userProfile.creationTime}`,
+        //         showConfirmButton: false,
+        //         timer: 1500,
+        //       });
+        //     }
+        //   });
         form.reset();
       })
       .catch((error) => {
