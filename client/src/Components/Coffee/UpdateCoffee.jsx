@@ -13,7 +13,7 @@ const UpdateCoffee = () => {
     console.log(updatedCoffee);
 
     /** Send Update Request to the Server */
-    fetch(`http://localhost:3000/coffee/${_id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/coffee/${_id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedCoffee),

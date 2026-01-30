@@ -21,7 +21,7 @@ const SignIn = () => {
           lastSignInTime: result?.user?.metadata?.lastSignInTime,
         };
         console.log(signInInfo);
-        fetch('http://localhost:3000/users', {
+        fetch(`${import.meta.env.VITE_API_URL}/users`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

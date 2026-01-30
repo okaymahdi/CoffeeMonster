@@ -9,7 +9,6 @@ const Users = () => {
   const { firebaseDeleteUser } = use(AuthContext);
   const initialUsers = useLoaderData();
   const [users, setUsers] = useState(initialUsers);
-  console.log(initialUsers);
 
   /** Delete User Handler */
   const handleDelete = (id) => {
@@ -25,7 +24,7 @@ const Users = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         try {
-          fetch(`http://localhost:3000/users/${id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
             method: 'DELETE',
           })
             .then(async (res) => {

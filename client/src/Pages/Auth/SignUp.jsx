@@ -34,7 +34,7 @@ const SignUp = () => {
         console.log('User Profile Data:', userProfile);
 
         /** Save Profile Info in the Database */
-        fetch('http://localhost:3000/users', {
+        fetch(`${import.meta.env.VITE_API_URL}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(userProfile),

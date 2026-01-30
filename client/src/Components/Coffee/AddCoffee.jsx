@@ -30,7 +30,7 @@ const AddCoffee = () => {
     console.log(coffeeData);
 
     /** Send Coffee Data to the Server */
-    fetch('http://localhost:3000/add-coffee', {
+    fetch(`${import.meta.env.VITE_API_URL}/add-coffee`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(coffeeData),

@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 
 const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
-  const { name, chef, price, photo, _id } = coffee;
+  const { name, quantity, price, photo, _id } = coffee;
 
   const handleDelete = (_id) => {
     try {
@@ -22,7 +22,7 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
           console.log(result.isConfirmed);
 
           /** Send Delete Request to Server */
-          fetch(`http://localhost:3000/coffee/${_id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/coffee/${_id}`, {
             method: 'DELETE',
           })
             .then((res) => res.json())
@@ -56,9 +56,9 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
       </figure>
       <div className='flex justify-around w-full mt-6'>
         <div>
-          <h2 className=''>{name}</h2>
+          <h2 className='text-2xl font-semibold'>{name}</h2>
           <p>
-            <strong>Chef:</strong> {chef}
+            <strong>Quantity:</strong> {quantity}
           </p>
           <p>
             <strong>Price:</strong> {price} Taka

@@ -19,7 +19,7 @@ const Router = createBrowserRouter([
         index: true,
         loader: async () => {
           try {
-            const res = await fetch('http://localhost:3000/coffees');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/coffees`);
             if (!res.ok) throw new Error('Failed to fetch coffees');
             const data = await res.json();
             return data;
@@ -39,7 +39,7 @@ const Router = createBrowserRouter([
         loader: async ({ params }) => {
           try {
             const res = await fetch(
-              `http://localhost:3000/coffee/${params.id}`,
+              `${import.meta.env.VITE_API_URL}/coffee/${params.id}`,
             );
             if (!res.ok) throw new Error('Failed to fetch coffees');
             const data = await res.json();
@@ -57,7 +57,7 @@ const Router = createBrowserRouter([
         loader: async ({ params }) => {
           try {
             const res = await fetch(
-              `http://localhost:3000/coffee/${params.id}`,
+              `${import.meta.env.VITE_API_URL}/coffee/${params.id}`,
             );
             if (!res.ok) throw new Error('Failed to fetch coffees');
             const data = await res.json();
@@ -79,7 +79,7 @@ const Router = createBrowserRouter([
       },
       {
         path: 'users',
-        loader: () => fetch('http://localhost:3000/users'),
+        loader: () => fetch(`${import.meta.env.VITE_API_URL}/users`),
         Component: Users,
       },
     ],

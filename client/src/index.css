@@ -24,19 +24,3 @@
     padding: 0;
   }
 }
-
-/* -----------------------------
-   Utilities
-------------------------------*/
-/* @layer utilities {
-  .tableBg {
-    background-color: var(--color-tableBg);
-  }
-  .text-title {
-    color: var(--color-title);
-  }
-
-  .text-placeholder {
-    color: var(--color-placeholder);
-  }
-} */
